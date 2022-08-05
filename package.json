@@ -1,0 +1,32 @@
+{
+  "name": "opensea-dev-wrapper",
+  "version": "1.0.0",
+  "description": "A custom software development kit (SDK) for interacting with original OpenSea SDK, API, or contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 300000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellingtonsu/opensea-api-wrapper.git"
+  },
+  "keywords": [
+    "OpenSea"
+  ],
+  "author": "Wei-Tsung Su",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ellingtonsu/opensea-api-wrapper/issues"
+  },
+  "homepage": "https://github.com/ellingtonsu/opensea-api-wrapper#readme",
+  "dependencies": {
+    "core-js": "^3.24.1",
+    "node-fetch": "^2.6.7"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^8.21.0",
+    "eslint-config-google": "^0.14.0",
+    "mocha": "^10.0.0"
+  }
+}
