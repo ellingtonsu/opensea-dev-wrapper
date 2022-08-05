@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ellingtonsu/opensea-api-wrapper.git"
+    "url": "git+https://github.com/ellingtonsu/opensea-dev-wrapper.git"
   },
   "keywords": [
     "OpenSea"
@@ -16,9 +16,9 @@
   "author": "Wei-Tsung Su",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/ellingtonsu/opensea-api-wrapper/issues"
+    "url": "https://github.com/ellingtonsu/opensea-dev-wrapper/issues"
   },
-  "homepage": "https://github.com/ellingtonsu/opensea-api-wrapper#readme",
+  "homepage": "https://github.com/ellingtonsu/opensea-dev-wrapper#readme",
   "dependencies": {
     "core-js": "^3.24.1",
     "node-fetch": "^2.6.7"
