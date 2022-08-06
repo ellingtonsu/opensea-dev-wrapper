@@ -1,8 +1,9 @@
+/* eslint-disable max-len */
 const fetch = require('node-fetch');
 const {setTimeout} = require('core-js');
 
 /**
- * Description
+ * Sleep for ms milliseconds
  * @param {any} ms
  * @return {any}
  */
@@ -16,23 +17,20 @@ const productionTimer = 300;
 module.exports = {
   api: {
     /**
-     * Description
-     * @param {any} apiUrl
-     * @param {any} config
-     * @param {any} params={}
+     * Wrapper of API - Retrieve assets by specifying collection
+     * @param {string} apiUrl - API endpoint
+     * @param {any} config - Config
+     * @param {any} [params={}] - Optional parameters of API
      * @return {any}
      */
-    getAssetIdsByCollection: async function(apiUrl, config, params = {}) {
+    getAssetsByCollection: async function(apiUrl, config, params = {}) {
       const collection = config.collection;
       const apiKey = config.api_key;
-      const orderDirection =
-            params.order_direction ? params.order_direction : 'desc';
+      const orderDirection = params.order_direction ? params.order_direction : 'desc';
       const offset = params.offset ? params.offset : 0;
       const limit = params.limit ? params.limit : 20;
-      const includeOrders =
-            params.include_orders ? params.include_orders : false;
+      const includeOrders = params.include_orders ? params.include_orders : false;
 
-      // eslint-disable-next-line max-len
       const url = `${apiUrl}?collection=${collection}&order_direction=${orderDirection}&offset=${offset}&limit=${limit}&include_orders=${includeOrders}`;
 
       const options = {
@@ -43,26 +41,23 @@ module.exports = {
       try {
         const res = await fetch(url, options);
         const data = await res.json();
-        const assetIds = [];
-        data.assets.forEach((asset) => assetIds.push(asset.token_id));
-        return assetIds;
+        return data;
       } catch (err) {
         throw err;
       }
     },
     /**
-     * Get Asset using API - Retrieve an asset
-     * @param {any} apiUrl
-     * @param {any} config
-     * @param {any} assetId
-     * @param {any} params={}
+     * Wrapper of API - Retrieve an asset by specifying token id
+     * @param {string} apiUrl - API endpoint
+     * @param {any} config - Config
+     * @param {string} assetId - Token id of asset
+     * @param {any} [params={}] - Optional parameters of API
      * @return {any}
      */
     getAssetById: async function(apiUrl, config, assetId, params = {}) {
       const contractAddress = config.contract_address;
       const apiKey = config.api_key;
 
-      // eslint-disable-next-line max-len
       const url = `${apiUrl}/${contractAddress}/${assetId}`;
       const options = {
         method: 'GET',
@@ -79,6 +74,13 @@ module.exports = {
     },
   },
   custom: {
+    /**
+     * Get owner list of all assets of specified collection
+     * @param {any} utils - Wrapper
+     * @param {any} config - Config
+     * @param {any} [params={}] - Optional parameters of API
+     * @return {any}
+     */
     getOwnerList: async function(utils, config, params = {}) {
       const timer = config.api_key == '' ? defaultTimer : productionTimer;
 
@@ -89,14 +91,14 @@ module.exports = {
       };
 
       try {
-        // eslint-disable-next-line max-len
-        const assetIds = await utils.api.getAssetIdsByCollection(config, params);
+        const data = await utils.api.getAssetsByCollection(config, params);
+        const assetIds = [];
+        data.assets.forEach((asset) => assetIds.push(asset.token_id));
         const numOfAssets = assetIds.length;
 
         await wait(timer);
 
         for (i=0; i<numOfAssets; i++) {
-          // eslint-disable-next-line max-len
           const asset = await utils.api.getAssetById(config, assetIds[i], params);
           const owners = asset.top_ownerships;
 
@@ -124,6 +126,14 @@ module.exports = {
       response.status = 'success';
       return response;
     },
+    /**
+     * Check if the given account address is the owner of any asset of specified collection or not
+     * @param {any} utils - Wrapper
+     * @param {any} config - Config
+     * @param {string} address - ETH account address
+     * @param {any} [params={}] - Optional parameters of API
+     * @return {any}
+     */
     checkOwnership: async function(utils, config, address, params = {}) {
       const timer = config.api_key == '' ? defaultTimer : productionTimer;
 
@@ -136,14 +146,14 @@ module.exports = {
       };
 
       try {
-        // eslint-disable-next-line max-len
-        const assetIds = await utils.api.getAssetIdsByCollection(config, params);
+        const data = await utils.api.getAssetsByCollection(config, params);
+        const assetIds = [];
+        data.assets.forEach((asset) => assetIds.push(asset.token_id));
         const numOfAssets = assetIds.length;
 
         await wait(timer);
 
         for (i=0; i<numOfAssets; i++) {
-          // eslint-disable-next-line max-len
           const asset = await utils.api.getAssetById(config, assetIds[i], params);
           const owners = asset.top_ownerships;
 

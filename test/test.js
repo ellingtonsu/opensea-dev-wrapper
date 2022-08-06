@@ -18,14 +18,16 @@ const collections = {
 describe('Testnet', function() {
   let assetId;
   describe('api test', function() {
-    it('getAssetIdsByCollection success test', async function() {
-      const res = await opensea.testnet.api.getAssetIdsByCollection(collections.testnet, {limit: 2});
-      assetId = res[0];
+    it('getAssetsByCollection success test', async function() {
+      const res = await opensea.testnet.api.getAssetsByCollection(collections.testnet, {limit: 2});
+      const assetIds = [];
+      res.assets.forEach((asset) => assetIds.push(asset.token_id));
+      assetId = assetIds[0];
       const exptectedRes = [
         '91900665702232483317502896843788391343945052347484836230427277169618352865930',
         '91900665702232483317502896843788391343945052347484836230427277168518841237754',
       ];
-      expect(res).to.deep.equal(exptectedRes);
+      expect(assetIds).to.deep.equal(exptectedRes);
     });
     it('getAssetById success test', async function() {
       const res = await opensea.testnet.api.getAssetById(collections.testnet, assetId);
@@ -50,14 +52,16 @@ describe('Testnet', function() {
 describe('Mainnet', function() {
   let assetId;
   describe('api test', function() {
-    it('getAssetIdsByCollection success test', async function() {
-      const res = await opensea.mainnet.api.getAssetIdsByCollection(collections.mainnet, {limit: 2});
-      assetId = res[0];
+    it('getAssetsByCollection success test', async function() {
+      const res = await opensea.mainnet.api.getAssetsByCollection(collections.mainnet, {limit: 2});
+      const assetIds = [];
+      res.assets.forEach((asset) => assetIds.push(asset.token_id));
+      assetId = assetIds[0];
       const exptectedRes = [
         '99858714975093628077684190452527207669783709549204884194549158759794927992947',
         '99858714975093628077684190452527207669783709549204884194549158759794927992946',
       ];
-      expect(res).to.deep.equal(exptectedRes);
+      expect(assetIds).to.deep.equal(exptectedRes);
     });
     it('getAssetById success test', async function() {
       const res = await opensea.mainnet.api.getAssetById(collections.mainnet, assetId);
