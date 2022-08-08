@@ -1,33 +1,46 @@
 /* eslint-disable max-len */
 const common = require('./commonWrapper');
+const apiConfig = require('../apiConfig/mainnetApiConfig');
 
-const utils = {
+const wrap = {
+  /**
+    * Native API
+    * @param {any} apiConfig - Default config of native API
+    * @param {any} [customParams={}] - Custom parameters of native API
+    * @param {any} [apiKey=''] - API key if available
+    * @return {any}
+    */
+  nativeApi: async function(apiConfig, customParams={}, apiKey = '') {
+    try {
+      return common.nativeApi(apiConfig, customParams, apiKey);
+    } catch (err) {
+      throw err;
+    }
+  },
   api: {
     /**
-     * Wrapper of Mainnet API - Retrieve assets by specifying collection
-     * @param {any} config - Config
-     * @param {any} params={} - Optional parameters of API
+     * Wrapper API (Mainnet) - Retrieve all assets of target collection
+     * @param {any} wrapConfig - Custom config of wrapped API
+     * @param {any} retrieveAssetsParams={} - Custom parameters of native API (retrieveAssets)
      * @return {any} - Assets
      */
-    getAssetsByCollection: async function(config, params = {}) {
-      const apiUrl = `https://api.opensea.io/api/v1/assets`;
+    getAssetsByCollection: async function(wrapConfig, retrieveAssetsParams={}) {
       try {
-        return common.api.getAssetsByCollection(apiUrl, config, params);
+        return common.api.getAssetsByCollection(wrapConfig, apiConfig.retrieveAssets, retrieveAssetsParams);
       } catch (err) {
         throw err;
       };
     },
     /**
-     * Wrapper of Mainnet API - Retrieve an asset by specifying token id
-     * @param {any} config - Config
-     * @param {string} assetId - Token id of asset
-     * @param {any} [params={}] - Optional parameters of API
+     * Wrapped API (Mainnet) - Retrieve an asset of target collection by token id
+     * @param {any} wrapConfig - Custom config of wrapped API
+     * @param {string} tokenId - Token id of asset
+     * @param {any} [retrieveAnAssetParams={}] - Optional parameters of API - retrieveAnAsset
      * @return {any}
      */
-    getAssetById: async function(config, assetId, params = {}) {
-      const apiUrl = `https://api.opensea.io/api/v1/asset`;
+    getAssetById: async function(wrapConfig, tokenId, retrieveAnAssetParams={}) {
       try {
-        return common.api.getAssetById(apiUrl, config, assetId, params);
+        return common.api.getAssetById(wrapConfig, tokenId, apiConfig.retrieveAnAsset, retrieveAnAssetParams);
       } catch (err) {
         throw err;
       };
@@ -35,28 +48,30 @@ const utils = {
   },
   custom: {
     /**
-     * Mainnet: get owner list of all assets of specified collection
-     * @param {any} config - Config
-     * @param {any} [params={}] - Optional parameters of API
+     * Custom API (Mainnet) - Get owner list of all assets of target collection
+     * @param {any} customConfig - Custom config of custom API
+     * @param {any} [retrieveAssetsParams={}] - Custom parameters of native API (retrieveAssets)
+     * @param {any} [retrieveAnAssetParams={}] - Custom parameters of native API (retrieveAnAsset)
      * @return {any}
      */
-    getOwnerList: async function(config, params = {}) {
+    getOwnerList: async function(customConfig, retrieveAssetsParams={}, retrieveAnAssetParams={}) {
       try {
-        return common.custom.getOwnerList(utils, config, params);
+        return common.custom.getOwnerList(wrap, customConfig, retrieveAssetsParams, retrieveAnAssetParams);
       } catch (err) {
         throw err;
       }
     },
     /**
-     * Mainnet: check if the given account address is the owner of any asset of specified collection or not
-     * @param {any} config - Config
-     * @param {string} address - ETH account address
-     * @param {any} [params={}] - Optional parameters of API
+     * Custom API (Mainnet) - Check if the account (address) is the owner of any asset of target collection or not
+     * @param {any} customConfig - Custom config of custom API
+     * @param {string} address - Account address
+     * @param {any} [retrieveAssetsParams={}] - Custom parameters of native API (retrieveAssets)
+     * @param {any} [retrieveAnAssetParams={}] - Custom parameters of native API (retrieveAnAsset)
      * @return {any}
      */
-    checkOwnership: async function(config, address, params = {}) {
+    checkOwnership: async function(customConfig, address, retrieveAssetsParams={}, retrieveAnAssetParams={}) {
       try {
-        return common.custom.checkOwnership(utils, config, address, params);
+        return common.custom.checkOwnership(wrap, customConfig, address, retrieveAssetsParams, retrieveAnAssetParams);
       } catch (err) {
         throw err;
       }
@@ -64,4 +79,4 @@ const utils = {
   },
 };
 
-module.exports = {utils};
+module.exports = wrap;

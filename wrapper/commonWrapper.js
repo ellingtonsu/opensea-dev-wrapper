@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable max-len */
 const fetch = require('node-fetch');
 const {setTimeout} = require('core-js');
@@ -11,63 +12,100 @@ function wait(ms) {
   return new Promise((resolve) =>setTimeout(() =>resolve(), ms));
 };
 
-const defaultTimer = 1000;
+const defaultTimer = 1200;
 const productionTimer = 300;
 
-module.exports = {
-  api: {
-    /**
-     * Wrapper of API - Retrieve assets by specifying collection
-     * @param {string} apiUrl - API endpoint
-     * @param {any} config - Config
-     * @param {any} [params={}] - Optional parameters of API
-     * @return {any}
-     */
-    getAssetsByCollection: async function(apiUrl, config, params = {}) {
-      const collection = config.collection;
-      const apiKey = config.api_key;
-      const orderDirection = params.order_direction ? params.order_direction : 'desc';
-      const offset = params.offset ? params.offset : 0;
-      const limit = params.limit ? params.limit : 20;
-      const includeOrders = params.include_orders ? params.include_orders : false;
+/**
+   * Description
+   * @param {any} apiConfig
+   * @param {any} customParams
+   * @return {string}
+   */
+function apiUrlGenerator(apiConfig, customParams) {
+  let url = apiConfig.endpoint;
 
-      const url = `${apiUrl}?collection=${collection}&order_direction=${orderDirection}&offset=${offset}&limit=${limit}&include_orders=${includeOrders}`;
+  if ('pathParams' in customParams) {
+    Object.keys(customParams.pathParams).forEach((key) => {
+      apiConfig.pathParams[key] = customParams.pathParams[key];
+    });
+  }
+  Object.keys(apiConfig.pathParams).forEach((key) => {
+    url += `/${apiConfig.pathParams[key]}`;
+  });
+  url += '?';
+  if ('queryParams' in customParams) {
+    Object.keys(customParams.queryParams).forEach((key) => {
+      apiConfig.queryParams[key] = customParams.queryParams[key];
+    });
+  }
+  Object.keys(apiConfig.queryParams).forEach((key) => {
+    url += `${key}=${apiConfig.queryParams[key]}&`;
+  });
+  return url;
+}
 
+const wrap = {
+  /**
+    * Native API
+    * @param {any} apiConfig - Default config of native API
+    * @param {any} customParams - Custom parameters of native API
+    * @param {any} [apiKey=''] - API key if available
+    * @return {any}
+    */
+   nativeApi: async function(apiConfig, customParams, apiKey = '') {
+    try {
+      const url = apiUrlGenerator(apiConfig, customParams);
       const options = {
         method: 'GET',
         headers: {'Accept': 'application/json', 'X-API-KEY': `${apiKey}`},
       };
-
+      const res = await fetch(url, options);
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  },
+  api: {
+    /**
+     * Wrapped API - Retrieve all assets of target collection
+     * @param {any} wrapConfig - Custom config of wrapped API
+     * @param {any} apiConfig - Default config of corresponding native API
+     * @param {any} [retrieveAssetsParams={}] - Custom parameters of native API (retrieveAssets)
+     * @return {any}
+     */
+    getAssetsByCollection: async function(wrapConfig, apiConfig, retrieveAssetsParams={}) {
       try {
-        const res = await fetch(url, options);
-        const data = await res.json();
-        return data;
+        const apiKey = wrapConfig.api_key;
+        retrieveAssetsParams.collection = wrapConfig.collection;
+        const customParams = {
+          pathParams: {},
+          queryParams: retrieveAssetsParams,
+        };
+        return wrap.nativeApi(apiConfig, customParams, apiKey);
       } catch (err) {
         throw err;
       }
     },
     /**
-     * Wrapper of API - Retrieve an asset by specifying token id
-     * @param {string} apiUrl - API endpoint
-     * @param {any} config - Config
-     * @param {string} assetId - Token id of asset
-     * @param {any} [params={}] - Optional parameters of API
+     * Wrapped API - Retrieve an asset of target collection by token id
+     * @param {any} wrapConfig - Custom config of wrapped API
+     * @param {string} tokenId - Token id of asset
+     * @param {any} apiConfig - Default config of corresponding native API
+     * @param {any} [retrieveAnAssetParams={}] - Custom parameters of native API (retrieveAnAsset)
      * @return {any}
      */
-    getAssetById: async function(apiUrl, config, assetId, params = {}) {
-      const contractAddress = config.contract_address;
-      const apiKey = config.api_key;
-
-      const url = `${apiUrl}/${contractAddress}/${assetId}`;
-      const options = {
-        method: 'GET',
-        headers: {'Accept': 'application/json', 'X-API-KEY': `${apiKey}`},
-      };
-
+    getAssetById: async function(wrapConfig, tokenId, apiConfig, retrieveAnAssetParams={}) {
       try {
-        const res = await fetch(url, options);
-        const data = await res.json();
-        return data;
+        const apiKey = wrapConfig.api_key;
+        const customParams = {
+          pathParams: {
+            asset_contract_address: wrapConfig.contract_address,
+            token_id: tokenId,
+          },
+          queryParams: retrieveAnAssetParams,
+        };
+        return wrap.nativeApi(apiConfig, customParams, apiKey);
       } catch (err) {
         throw err;
       }
@@ -75,14 +113,15 @@ module.exports = {
   },
   custom: {
     /**
-     * Get owner list of all assets of specified collection
-     * @param {any} utils - Wrapper
-     * @param {any} config - Config
-     * @param {any} [params={}] - Optional parameters of API
+     * Custom API - Get owner list of all assets of target collection
+     * @param {any} wrap - Wrapper of mainnet or testnet
+     * @param {any} customConfig - Custom config of custom API
+     * @param {any} [retrieveAssetsParams={}] - Custom parameters of native API (retrieveAssets)
+     * @param {any} [retrieveAnAssetParams={}] - Custom parameters of native API (retrieveAnAsset)
      * @return {any}
      */
-    getOwnerList: async function(utils, config, params = {}) {
-      const timer = config.api_key == '' ? defaultTimer : productionTimer;
+    getOwnerList: async function(wrap, customConfig, retrieveAssetsParams={}, retrieveAnAssetParams={}) {
+      const timer = customConfig.api_key == '' ? defaultTimer : productionTimer;
 
       const response = {
         'status': 'error',
@@ -91,7 +130,7 @@ module.exports = {
       };
 
       try {
-        const data = await utils.api.getAssetsByCollection(config, params);
+        const data = await wrap.api.getAssetsByCollection(customConfig, retrieveAssetsParams);
         const assetIds = [];
         data.assets.forEach((asset) => assetIds.push(asset.token_id));
         const numOfAssets = assetIds.length;
@@ -99,9 +138,8 @@ module.exports = {
         await wait(timer);
 
         for (i=0; i<numOfAssets; i++) {
-          const asset = await utils.api.getAssetById(config, assetIds[i], params);
+          const asset = await wrap.api.getAssetById(customConfig, assetIds[i], retrieveAnAssetParams);
           const owners = asset.top_ownerships;
-
           const ownersOfAsset = {
             'name': asset.name,
             'id': asset.token_id,
@@ -127,15 +165,16 @@ module.exports = {
       return response;
     },
     /**
-     * Check if the given account address is the owner of any asset of specified collection or not
-     * @param {any} utils - Wrapper
-     * @param {any} config - Config
-     * @param {string} address - ETH account address
-     * @param {any} [params={}] - Optional parameters of API
+     * Custom API - Check if the account (address) is the owner of any asset of target collection or not
+     * @param {any} wrap - Wrapper of mainnet or testnet
+     * @param {any} customConfig - Custom config of custom API
+     * @param {string} address - Account address
+     * @param {any} [retrieveAssetsParams={}] - Custom parameters of native API (retrieveAssets)
+     * @param {any} [retrieveAnAssetParams={}] - Custom parameters of native API (retrieveAnAsset)
      * @return {any}
      */
-    checkOwnership: async function(utils, config, address, params = {}) {
-      const timer = config.api_key == '' ? defaultTimer : productionTimer;
+    checkOwnership: async function(wrap, customConfig, address, retrieveAssetsParams={}, retrieveAnAssetParams={}) {
+      const timer = customConfig.api_key == '' ? defaultTimer : productionTimer;
 
       const response = {
         'status': 'error',
@@ -146,7 +185,7 @@ module.exports = {
       };
 
       try {
-        const data = await utils.api.getAssetsByCollection(config, params);
+        const data = await wrap.api.getAssetsByCollection(customConfig, retrieveAssetsParams);
         const assetIds = [];
         data.assets.forEach((asset) => assetIds.push(asset.token_id));
         const numOfAssets = assetIds.length;
@@ -154,7 +193,7 @@ module.exports = {
         await wait(timer);
 
         for (i=0; i<numOfAssets; i++) {
-          const asset = await utils.api.getAssetById(config, assetIds[i], params);
+          const asset = await wrap.api.getAssetById(customConfig, assetIds[i], retrieveAnAssetParams);
           const owners = asset.top_ownerships;
 
           owners.forEach((owner) => {
@@ -182,3 +221,5 @@ module.exports = {
     },
   },
 };
+
+module.exports = wrap;

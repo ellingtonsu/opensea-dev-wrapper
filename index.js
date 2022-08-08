@@ -1,3 +1,4 @@
-const opensea = require('./wrapper/openseaWrapper.js');
+const openseaWrap = require('./wrapper/openseaWrapper.js');
+const apiConfig = require('./apiConfig/openseaApiConfig');
 
-module.exports = opensea;
+module.exports = {openseaWrap, apiConfig};

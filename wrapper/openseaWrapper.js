@@ -1,7 +1,7 @@
-const testnet = require('./testnetWrapper');
-const mainnet = require('./mainnetWrapper');
+const testnetWrapper = require('./testnetWrapper');
+const mainnetWrapper = require('./mainnetWrapper');
 
 module.exports = {
-  testnet: testnet.utils,
-  mainnet: mainnet.utils,
+  testnet: testnetWrapper,
+  mainnet: mainnetWrapper,
 };
