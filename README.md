@@ -7,12 +7,17 @@ A JavaScript software development kit (SDK) for easily interacting with native O
 - [Getting Started](#getting-started)
 - [Native API](#native-api)
   - [A Complete Example of Native API](#a-complete-example-of-native-api)
+  - [Built-in Native API Configs](#built-in-native-api-configs)
 - [Wrapped APIs](#wrapped-apis)
   - [A Complete Example of Wrapped APIs](#a-complete-example-of-wrapped-apis)
   - [Built-in Wrapped APIs](#built-in-wrapped-apis)
 - [Custom APIs](#custom-apis)
   - [A Complete Example of Custom APIs](#a-complete-example-of-custom-apis)
   - [Bulit-in Custom APIs](#bulit-in-custom-apis)
+- [Release Notes](#release-notes)
+  - [v1.1.1](#v111)
+  - [v1.1.0](#v110)
+  - [v1.0.1](#v101)
 
 ## Installation
 In your project, run
@@ -96,6 +101,16 @@ async function test() {
 
 test();
 ```
+
+### Built-in Native API Configs
+- Retrieve assets ([mainnet](https://docs.opensea.io/reference/getting-assets), [testnet](https://docs.opensea.io/reference/retrieving-assets-rinkeby))
+- Retrieve an asset ([mainnet](https://docs.opensea.io/reference/retrieving-a-single-asset), [testnet](https://docs.opensea.io/reference/retrieving-a-single-asset-testnets))
+- Retrieve collections ([mainnet](https://docs.opensea.io/reference/retrieving-collections), [testnet](https://docs.opensea.io/reference/retrieving-collections-testnets))
+- Retrieve a collection ([mainnet](https://docs.opensea.io/reference/retrieving-a-single-collection), [testnet](https://docs.opensea.io/reference/retrieving-a-single-collection-testnets))
+- Retrieve collection stats ([mainnet](https://docs.opensea.io/reference/retrieving-collection-stats), [testnet](https://docs.opensea.io/reference/retrieving-collection-stats-testnets))
+- Retrieve a contract ([mainnet](https://docs.opensea.io/reference/retrieving-a-single-contract), [testnet](https://docs.opensea.io/reference/retrieving-a-single-contract-testnets))
+- Retrieve bundles ([mainnet](https://docs.opensea.io/reference/retrieving-bundles), [tesetnet](https://docs.opensea.io/reference/retrieving-bundles-testnet))
+- Retrieve owners ([mainnet](https://docs.opensea.io/reference/retrieve-owners))
 
 ## Wrapped APIs
 Developers who focus on target collection can use the wrapped APIs built-in in ```opensea-dev-wrapper```.
@@ -218,3 +233,36 @@ test();
 ### Bulit-in Custom APIs
 - getOwnerList
 - checkOwnership
+
+## Release Notes
+### v1.1.1
+August 9, 2022
+
+***What's New***
+- Add native API configs
+  - Retrieve collections (mainnet, testnet)
+  - Retrieve a collection (mainnet, testnet)
+  - Retrieve collection stats (mainnet, testnet)
+  - Retrieve a contract (mainnet, testnet)
+  - Retrieve bundles (mainnet, tesetnet)
+  - Retrieve owners (mainnet)
+
+### v1.1.0
+August 9, 2022
+
+***What's New***
+- Add native API configs
+  - Retrieve assets (mainnet, testnet)
+  - Retrieve an asset (mainnet, testnet)
+- Add wrapped APIs
+  - getAssetsByCollection (mainnet, testnet)
+  - getAssetById (mainnet, testnet)
+- Add custom APIs
+  - getOwnerList (mainnet, testnet)
+  - checkOwnership (mainnet, testnet)
+
+### v1.0.1
+August 7, 2022
+
+First release
+

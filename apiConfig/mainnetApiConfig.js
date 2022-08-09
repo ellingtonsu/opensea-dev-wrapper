@@ -1,6 +1,31 @@
 const params = require('./apiParams');
 
 module.exports = {
+  retrieveAContract: {
+    endpoint: `https://api.opensea.io/api/v1/asset_contract`,
+    pathParams: params.common.retrieveAContract.pathParams,
+    queryParams: params.common.retrieveAContract.queryParams,
+  },
+  retrieveBundles: {
+    endpoint: `https://api.opensea.io/api/v1/bundles`,
+    pathParams: params.common.retrieveBundles.pathParams,
+    queryParams: params.common.retrieveBundles.queryParams,
+  },
+  retrieveCollectionStats: {
+    endpoint: `https://api.opensea.io/api/v1/collection`,
+    pathParams: params.common.retrieveCollectionStats.pathParams,
+    queryParams: params.common.retrieveCollectionStats.queryParams,
+  },
+  retrieveACollection: {
+    endpoint: `https://api.opensea.io/api/v1/collection`,
+    pathParams: params.common.retrieveACollection.pathParams,
+    queryParams: params.common.retrieveACollection.queryParams,
+  },
+  retrieveCollections: {
+    endpoint: `https://api.opensea.io/api/v1/collections`,
+    pathParams: params.common.retrieveCollections.pathParams,
+    queryParams: params.common.retrieveCollections.queryParams,
+  },
   retrieveAssets: {
     endpoint: `https://api.opensea.io/api/v1/assets`,
     pathParams: params.common.retrieveAssets.pathParams,
@@ -14,6 +39,6 @@ module.exports = {
   retrieveOwners: {
     endpoint: 'https://api.opensea.io/api/v1/asset',
     pathParams: params.mainnet.retrieveOwners.pathParams,
-    queryParams: params.mainnet.retrieveOwners.pathParams,
+    queryParams: params.mainnet.retrieveOwners.queryParams,
   },
 };
