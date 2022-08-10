@@ -4,7 +4,7 @@
   "description": "A custom software development kit (SDK) for interacting with original OpenSea SDK, API, or contracts",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 300000"
+    "test": "mocha --timeout 600000"
   },
   "repository": {
     "type": "git",

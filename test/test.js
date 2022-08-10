@@ -1,84 +1,124 @@
 /* eslint-disable max-len */
 const expect = require('chai').expect;
-const opensea = require('../wrapper/openseaWrapper.js');
+const openseaWrap = require('../wrapper/openseaWrapper.js');
+const apiConfig = require('../apiConfig/openseaApiConfig.js');
+const {setTimeout} = require('core-js');
 
-const collections = {
+/**
+ * Sleep for ms milliseconds
+ * @param {any} ms
+ * @return {any}
+ */
+function wait(ms) {
+  return new Promise((resolve) =>setTimeout(() =>resolve(), ms));
+};
+
+const defaultTimer = 1200;
+// const productionTimer = 300;
+
+const config = {
   'testnet': {
     'collection': 'dtg-wounderland',
     'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
     'api_key': '',
   },
-  'mainnet': {
+  'mainnet721': {
     'collection': 'project-beecasso',
     'contract_address': '0x91146bb8d37324de145acfaa06c53794bf045838',
+    'api_key': '',
+  },
+  'mainnet': {
+    'collection': 'clubgame-items',
+    'contract_address': '0x0a495fdcaB693017A50D19ea09945B3889a7707F',
     'api_key': '',
   },
 };
 
 describe('Testnet', function() {
-  let assetId;
-  describe('api test', function() {
-    it('getAssetsByCollection success test', async function() {
-      const res = await opensea.testnet.api.getAssetsByCollection(collections.testnet, {limit: 2});
-      const assetIds = [];
-      res.assets.forEach((asset) => assetIds.push(asset.token_id));
-      assetId = assetIds[0];
-      const exptectedRes = [
-        '91900665702232483317502896843788391343945052347484836230427277169618352865930',
-        '91900665702232483317502896843788391343945052347484836230427277168518841237754',
-      ];
-      expect(assetIds).to.deep.equal(exptectedRes);
-    });
-    it('getAssetById success test', async function() {
-      const res = await opensea.testnet.api.getAssetById(collections.testnet, assetId);
-      const exptectedRes = '音寶';
-      expect(res.name).to.equal(exptectedRes);
+  describe('Native API Test', function() {
+    it('retrieveAssets native API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.nativeApi(apiConfig.testnet.retrieveAssets);
+      expect(data.assets).exist;
     });
   });
-  describe('custom test', function() {
-    let owner;
-    it('getOwnerList success test', async function() {
-      const res = await opensea.testnet.custom.getOwnerList(collections.testnet, {limit: 2});
-      owner = res.data[0].owners[0].address;
-      expect(res.status).to.equal('success');
+  describe('Wrapped APIs Test', function() {
+    let tokenId;
+    let assetName;
+    it('getAssetsByCollection wrapped API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.api.getAssetsByCollection(config.testnet, {limit: 2});
+      tokenId = data.assets[0].token_id;
+      assetName = data.assets[0].name;
+      expect(data.assets.length).to.equal(2);
     });
-    it('checkOwnership success test', async function() {
-      const res = await opensea.testnet.custom.checkOwnership(collections.testnet, owner, {limit: 2});
-      expect(res.owner).to.equal(true);
+    it('getAssetById wrapped API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.api.getAssetById(config.testnet, tokenId);
+      const exptectedRes = assetName;
+      expect(data.name).to.equal(exptectedRes);
+    });
+  });
+  describe('Custom APIs Test', function() {
+    it('getAssetIdsByCollection custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.custom.getAssetIdsByCollection(config.testnet);
+      expect(data.length).to.equal(3);
+    });
+    let owner;
+    it('getOwnerList custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.custom.getOwnerList(config.testnet);
+      owner = data.data[0].owners[0].address;
+      expect(data.status).to.equal('success');
+    });
+    it('checkOwnership custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.testnet.custom.checkOwnership(config.testnet, owner);
+      expect(data.owner).to.equal(true);
     });
   });
 });
 
 describe('Mainnet', function() {
-  let assetId;
-  describe('api test', function() {
-    it('getAssetsByCollection success test', async function() {
-      const res = await opensea.mainnet.api.getAssetsByCollection(collections.mainnet, {limit: 2});
-      const assetIds = [];
-      res.assets.forEach((asset) => assetIds.push(asset.token_id));
-      assetId = assetIds[0];
-      const exptectedRes = [
-        '99858714975093628077684190452527207669783709549204884194549158759794927992947',
-        '99858714975093628077684190452527207669783709549204884194549158759794927992946',
-      ];
-      expect(assetIds).to.deep.equal(exptectedRes);
-    });
-    it('getAssetById success test', async function() {
-      const res = await opensea.mainnet.api.getAssetById(collections.mainnet, assetId);
-      const exptectedRes = 'SUNMAI for LOVE #099';
-      expect(res.name).to.equal(exptectedRes);
+  describe('Native API Test', function() {
+    it('retrieveAssets native API test (success)', async function() {
+      const data = await openseaWrap.mainnet.nativeApi(apiConfig.mainnet.retrieveAssets);
+      expect(data.assets).exist;
     });
   });
-  describe('custom test', function() {
-    let owner;
-    it('getOwnerList success test', async function() {
-      const res = await opensea.mainnet.custom.getOwnerList(collections.mainnet, {limit: 2});
-      owner = res.data[0].owners[0].address;
-      expect(res.status).to.equal('success');
+  describe('Wrapped APIs Test', function() {
+    let tokenId;
+    let assetName;
+    it('getAssetsByCollection wrapped API test (success)', async function() {
+      const data = await openseaWrap.mainnet.api.getAssetsByCollection(config.mainnet, {limit: 2});
+      tokenId = data.assets[0].token_id;
+      assetName = data.assets[0].name;
+      expect(data.assets.length).to.equal(1);
     });
-    it('checkOwnership success test', async function() {
-      const res = await opensea.mainnet.custom.checkOwnership(collections.mainnet, owner, {limit: 2});
-      expect(res.owner).to.equal(true);
+    it('getAssetById wrapped API test (success)', async function() {
+      const data = await openseaWrap.mainnet.api.getAssetById(config.mainnet, tokenId);
+      const exptectedRes = assetName;
+      expect(data.name).to.equal(exptectedRes);
+    });
+  });
+  describe('Custom APIs Test', function() {
+    it('getAssetIdsByCollection custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.mainnet.custom.getAssetIdsByCollection(config.mainnet, {});
+      expect(data.length).to.equal(1);
+    });
+    let owner;
+    it('getOwnerList custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.mainnet.custom.getOwnerList(config.mainnet);
+      owner = data.data[0].owners[0].address;
+      expect(data.status).to.equal('success');
+    });
+    it('checkOwnership custom API test (success)', async function() {
+      await wait(defaultTimer);
+      const data = await openseaWrap.mainnet.custom.checkOwnership(config.mainnet, owner);
+      expect(data.owner).to.equal(true);
     });
   });
 });

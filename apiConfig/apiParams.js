@@ -37,7 +37,7 @@ module.exports = {
       pathParams: {},
       queryParams: {
         order_direction: 'desc',
-        limit: 20,
+        limit: 50,
         include_orders: false,
       },
     },
@@ -50,8 +50,6 @@ module.exports = {
         include_orders: false,
       },
     },
-  },
-  mainnet: {
     retrieveOwners: {
       pathParams: {
         asset_contract_address: '0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb',
@@ -60,7 +58,7 @@ module.exports = {
       },
       queryParams: {
         order_direction: 'desc',
-        limit: 20,
+        limit: 50,
         order_by: 'created_date',
       },
     },

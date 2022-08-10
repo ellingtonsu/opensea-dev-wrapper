@@ -38,7 +38,7 @@ module.exports = {
   },
   retrieveOwners: {
     endpoint: 'https://api.opensea.io/api/v1/asset',
-    pathParams: params.mainnet.retrieveOwners.pathParams,
-    queryParams: params.mainnet.retrieveOwners.queryParams,
+    pathParams: params.common.retrieveOwners.pathParams,
+    queryParams: params.common.retrieveOwners.queryParams,
   },
 };

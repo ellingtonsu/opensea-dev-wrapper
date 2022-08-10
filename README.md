@@ -110,7 +110,7 @@ test();
 - Retrieve collection stats ([mainnet](https://docs.opensea.io/reference/retrieving-collection-stats), [testnet](https://docs.opensea.io/reference/retrieving-collection-stats-testnets))
 - Retrieve a contract ([mainnet](https://docs.opensea.io/reference/retrieving-a-single-contract), [testnet](https://docs.opensea.io/reference/retrieving-a-single-contract-testnets))
 - Retrieve bundles ([mainnet](https://docs.opensea.io/reference/retrieving-bundles), [tesetnet](https://docs.opensea.io/reference/retrieving-bundles-testnet))
-- Retrieve owners ([mainnet](https://docs.opensea.io/reference/retrieve-owners))
+- Retrieve owners ([mainnet](https://docs.opensea.io/reference/retrieve-owners), testnet)
 
 ## Wrapped APIs
 Developers who focus on target collection can use the wrapped APIs built-in in ```opensea-dev-wrapper```.
@@ -231,12 +231,13 @@ test();
 ```
 
 ### Bulit-in Custom APIs
-- getOwnerList
-- checkOwnership
+- getAssetIdsByCollection
+- getOwnerList (<span style="color:red">**CAUTION**</span>: it takes time if there are too many tokens in target collection.)
+- checkOwnership (<span style="color:red">**CAUTION**</span>: it takes time if there are too many tokens in target collection.)
 
 ## Release Notes
 ### v1.1.1
-August 9, 2022
+August 10, 2022
 
 ***What's New***
 - Add native API configs
@@ -245,7 +246,12 @@ August 9, 2022
   - Retrieve collection stats (mainnet, testnet)
   - Retrieve a contract (mainnet, testnet)
   - Retrieve bundles (mainnet, tesetnet)
-  - Retrieve owners (mainnet)
+  - Retrieve owners (mainnet, testnet)
+- Add custom API
+  - getAssetIdsByCollection (mainnet, testnet)
+
+***Bug Fixed***
+- getOwnerList and checkOwnership are fixed by fetching all owners (via retrieveOwners native API) instead of top_ownerships (vai retrieveAnAssets native API)
 
 ### v1.1.0
 August 9, 2022
@@ -265,4 +271,3 @@ August 9, 2022
 August 7, 2022
 
 First release
-

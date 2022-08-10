@@ -36,4 +36,9 @@ module.exports = {
     pathParams: params.common.retrieveAnAsset.pathParams,
     queryParams: params.common.retrieveAnAsset.queryParams,
   },
+  retrieveOwners: {
+    endpoint: 'https://testnets-api.opensea.io/api/v1/asset',
+    pathParams: params.common.retrieveOwners.pathParams,
+    queryParams: params.common.retrieveOwners.queryParams,
+  },
 };
