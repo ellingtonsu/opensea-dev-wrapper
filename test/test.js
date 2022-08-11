@@ -21,16 +21,19 @@ const config = {
     'collection': 'dtg-wounderland',
     'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
     'api_key': '',
+    'infura_endpoint': '',
   },
   'mainnet721': {
     'collection': 'project-beecasso',
     'contract_address': '0x91146bb8d37324de145acfaa06c53794bf045838',
     'api_key': '',
+    'infura_endpoint': '',
   },
   'mainnet': {
     'collection': 'clubgame-items',
     'contract_address': '0x0a495fdcaB693017A50D19ea09945B3889a7707F',
     'api_key': '',
+    'infura_endpoint': '',
   },
 };
 

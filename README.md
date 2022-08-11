@@ -32,12 +32,12 @@ First, developers use ```require()``` to include ```opensea-dev-wrapper``` as
 const {openseaWrap, apiConfig} = require('opensea-dev-wrapper');
 ```
 
-Developers can interace with OpenSea with ```openseaWrap``` object and can retieve the built-in default configs of OpenSea native APIs with ```apiConfig``` object.
+Developers can interact with OpenSea with ```openseaWrap``` object and can retieve the built-in default configs of OpenSea native APIs with ```apiConfig``` object.
 
 Then, developers can use ```opensea-dev-wrapper``` in different ways as described as follows.
 
 ## Native API
-Developers can call any native [OpenSean API](https://docs.opensea.io/reference/api-overview) with ```nativeApi``` function deifined as
+Developers can call any native [OpenSea API](https://docs.opensea.io/reference/api-overview) with ```nativeApi``` function defined as
 
 ```js
 /**
@@ -50,13 +50,24 @@ Developers can call any native [OpenSean API](https://docs.opensea.io/reference/
   nativeApi(apiConfig, customParams={}, apiKey='');
 ```
 
-Developers can retrieve the default configs of **some** OpenSea APIs built-in in ```opensea-dev-wrapper``` with ```apiConfig``` object as
+Developers can get the default configs of **some** OpenSea APIs built-in in ```opensea-dev-wrapper``` with ```apiConfig``` object as
 
 ```js
-const testnetTargetApiConfig = apiConfig.testnet.[built-in APIs]; // apiConfig.mainnet for mainnet
+const testnetTargetApiConfig = apiConfig.testnet.[built-in APIs]; // use apiConfig.mainnet for mainnet
 ```
 
- If target API is not built-in in ```opensea-dev-wrapper```, experienced developers can create the config of target API. For example, the config of testnet API (retrieve assets) can be defined as  
+If specific path and query parameters are required, developers can define the ```customParams``` object. For example, 
+
+```js
+const customParams = {
+  pathParams: {},
+  queryParams: {
+    limit: 5,
+  },
+};
+```
+
+If target API is not built-in in ```opensea-dev-wrapper```, experienced developers can create the config of target API by themself. For example, the config of testnet API (retrieve assets) can be defined as
 
 ```js
 const testnetRetrieveAssetsConfig =  {
@@ -70,21 +81,10 @@ const testnetRetrieveAssetsConfig =  {
 },  
 ```
 
-If the custom path and query parameters are expected, developers can define the ```customParams``` object. For example, 
-
-```js
-const customParams = {
-  pathParams: {},
-  queryParams: {
-    limit: 5,
-  },
-};
-```
-
 ### A Complete Example of Native API
 ```js
 const {openseaWrap, apiConfig} = require('opensea-dev-wrapper');
-const testnetRetrieveAssetsConfig = apiConfig.testnet.retrieveAssets;
+const targetApiConfig = apiConfig.testnet.retrieveAssets;
 
 const customParams = {
   pathParams: {},
@@ -95,7 +95,7 @@ const customParams = {
 };
 
 async function test() {
-  const data = await openseaWrap.testnet.nativeApi(testnetRetrieveAssetsConfig, customParams);
+  const data = await openseaWrap.testnet.nativeApi(targetApiConfig, customParams);
   console.log(data);
 }
 
@@ -115,17 +115,18 @@ test();
 ## Wrapped APIs
 Developers who focus on target collection can use the wrapped APIs built-in in ```opensea-dev-wrapper```.
 
-To use the wrapped APIs, developers first define a wrap config as
+To use the wrapped APIs, developers MUST define a wrap config as
 
 ```js
 const wrapConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
   'api_key': '',
+  'infura_endpoint': '',
 };
 ```
 
-Then, developers can define custom query parameters if required as
+Then, developers can define specific query parameters if required as
 
 ```js
 const queryParams = {
@@ -152,6 +153,7 @@ const wrapConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
   'api_key': '',
+  'infura_endpoint': '',
 };
 
 const queryParams = {
@@ -171,7 +173,7 @@ test();
 - getAssetById
 
 ## Custom APIs
-Developers can also call the custom APIs built-in in ```opensea-dev-wrapper```. For example, developers can check the ownership with the ``checkOwnership``` custom API defined as
+Developers can also call the custom APIs built-in in ```opensea-dev-wrapper```. For example, developers can check the ownership with the ```checkOwnership``` custom API defined as
 
 ```js
 /**
@@ -192,6 +194,7 @@ const customConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
   'api_key': '',
+  'infura_endpoint': '',
 };
 ```
 
@@ -215,6 +218,7 @@ const customConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
   'api_key': '',
+  'infura_endpoint': '',
 };
 
 const address = '0xCB2DeeF8Bff8f948bA8bA655cc6C81D199Ee3D32';
