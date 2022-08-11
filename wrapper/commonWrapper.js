@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 const fetch = require('node-fetch');
+const Web3 = require('web3');
+const {OpenSeaSDK, Network} = require('opensea-js');
 const {wait, defaultTimer, productionTimer} = require('../utils/wait');
 
 /**
@@ -227,6 +229,70 @@ const wrap = {
               break;
             }
           };
+        }
+      } catch (err) {
+        response.message = err.message;
+        return response;
+      }
+
+      response.status = 'success';
+      return response;
+    },
+    /**
+     * Custom API - Check if the account (address) is the owner of any asset of target collection or not by Infura
+     * @param {any} wrap - Wrapper of mainnet or testnet
+     * @param {any} apiConfig - apiConfig of mainnet or testnet
+     * @param {any} customConfig - Custom config of custom API
+     * @param {string} address - Account address
+     * @param {any} retrieveAssetsParams - Custom parameters of native API (retrieveAssets)
+     * @param {any} retrieveAnAssetParams - Custom parameters of native API (retrieveAnAsset)
+     * @return {any}
+     */
+    checkOwnershipInfura: async function(wrap, apiConfig, customConfig, address, retrieveAssetsParams, retrieveAnAssetParams) {
+      const response = {
+        'status': 'error',
+        'owner': false,
+        'address': address,
+        'data': [],
+        'message': '',
+      };
+
+      try {
+        const web3 = new Web3(new Web3.providers.HttpProvider(customConfig.infura_endpoint));
+
+        const openseaSDK = new OpenSeaSDK(web3.currentProvider, {
+          networkName: wrap.network == 'mainnet' ? Network.Mainnet : Network.Rinkeby,
+          apiKey: customConfig.apiKey,
+        });
+
+        const tokenIds = await wrap.custom.getAssetIdsByCollection(customConfig, retrieveAssetsParams);
+        const numOfAssets = tokenIds.length;
+
+        for (i=0; i<numOfAssets; i++) {
+          const asset = await wrap.api.getAssetById(customConfig, tokenIds[i], retrieveAnAssetParams);
+
+          const assetInfura = {
+            tokenAddress: customConfig.contract_address,
+            tokenId: tokenIds[i],
+            schemaName: customConfig.schema,
+          };
+
+          const quantity = await openseaSDK.getAssetBalance({
+            accountAddress: address,
+            asset: assetInfura,
+          });
+
+          if (quantity > 0) {
+            response.owner = true;
+            const assetOfOwner = {
+              'name': asset.name,
+              'id': asset.token_id,
+              'image_url': asset.image_url,
+              'class': asset.traits[0] ? asset.traits[0].value : 0,
+              'quantity': quantity,
+            };
+            response.data.push(assetOfOwner);
+          }
         }
       } catch (err) {
         response.message = err.message;

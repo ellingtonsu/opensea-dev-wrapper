@@ -13,27 +13,31 @@ function wait(ms) {
   return new Promise((resolve) =>setTimeout(() =>resolve(), ms));
 };
 
-const defaultTimer = 1200;
-// const productionTimer = 300;
+const defaultTimer = 800;
+const infuraTestnetEndpoint = '';
+const infuraMainnetEndpoint = '';
 
 const config = {
   'testnet': {
     'collection': 'dtg-wounderland',
     'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+    'schema': 'ERC1155',
     'api_key': '',
-    'infura_endpoint': '',
+    'infura_endpoint': infuraTestnetEndpoint,
   },
   'mainnet721': {
     'collection': 'project-beecasso',
     'contract_address': '0x91146bb8d37324de145acfaa06c53794bf045838',
+    'schema': 'ERC721',
     'api_key': '',
-    'infura_endpoint': '',
+    'infura_endpoint': infuraMainnetEndpoint,
   },
   'mainnet': {
     'collection': 'clubgame-items',
     'contract_address': '0x0a495fdcaB693017A50D19ea09945B3889a7707F',
+    'schema': 'ERC1155',
     'api_key': '',
-    'infura_endpoint': '',
+    'infura_endpoint': infuraMainnetEndpoint,
   },
 };
 

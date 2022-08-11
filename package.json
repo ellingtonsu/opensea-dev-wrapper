@@ -21,7 +21,9 @@
   "homepage": "https://github.com/ellingtonsu/opensea-dev-wrapper#readme",
   "dependencies": {
     "core-js": "^3.24.1",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "opensea-js": "^4.0.6",
+    "web3": "^1.7.5"
   },
   "devDependencies": {
     "chai": "^4.3.6",

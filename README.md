@@ -15,12 +15,22 @@ A JavaScript software development kit (SDK) for easily interacting with native O
   - [A Complete Example of Custom APIs](#a-complete-example-of-custom-apis)
   - [Bulit-in Custom APIs](#bulit-in-custom-apis)
 - [Release Notes](#release-notes)
+  - [v1.1.1](#v111)
   - [v1.2.0](#v120)
   - [v1.1.0](#v110)
   - [v1.0.1](#v101)
 
 ## Installation
-In your project, run
+Developers can install ```opensea-dev-wrapper``` via ```yarn``` (recommended) or ```npm``` package managers.
+
+In your project directory, run
+
+```shell
+yarn add opensea-dev-wrapper
+```
+
+or
+
 ```shell
 npm i opensea-dev-wrapper --save
 ```
@@ -121,6 +131,7 @@ To use the wrapped APIs, developers MUST define a wrap config as
 const wrapConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  'schema': 'ERC1155',
   'api_key': '',
   'infura_endpoint': '',
 };
@@ -152,6 +163,7 @@ const {openseaWrap} = require('opensea-dev-wrapper');
 const wrapConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  'schema': 'ERC1155',
   'api_key': '',
   'infura_endpoint': '',
 };
@@ -193,6 +205,7 @@ To use the custom APIs, developers MUST define a custom config as
 const customConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  'schema': 'ERC1155',
   'api_key': '',
   'infura_endpoint': '',
 };
@@ -217,6 +230,7 @@ const {openseaWrap} = require('opensea-dev-wrapper');
 const customConfig = {
   'collection': 'dtg-wounderland',
   'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  'schema': 'ERC1155',
   'api_key': '',
   'infura_endpoint': '',
 };
@@ -240,6 +254,15 @@ test();
 - checkOwnership (<span style="color:red">**CAUTION**</span>: it takes time if there are too many tokens in target collection.)
 
 ## Release Notes
+### v1.1.1
+August 11, 2022
+
+***What's New***
+- Improve custom API
+  -  ```checkOwnership()``` now can take short time with OpenSea SDK by providing Infura endpoint in config
+- Package manager change
+  - ```yarn``` is recommended to install ```opensea-dev-wrapper```
+
 ### v1.2.0
 August 10, 2022
 

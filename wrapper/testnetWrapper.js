@@ -3,6 +3,7 @@ const common = require('./commonWrapper');
 const apiConfig = require('../apiConfig/testnetApiConfig');
 
 const wrap = {
+  network: 'testnet',
   /**
     * Native API
     * @param {any} apiConfig - Default config of native API
@@ -111,8 +112,13 @@ const wrap = {
      */
     checkOwnership: async function(customConfig, address, retrieveAssetsParams={}, retrieveAnAssetParams={}) {
       try {
-        const data = await common.custom.checkOwnership(wrap, apiConfig, customConfig, address, retrieveAssetsParams, retrieveAnAssetParams);
-        return data;
+        if (customConfig.infura_endpoint == '') {
+          data = await common.custom.checkOwnership(wrap, apiConfig, customConfig, address, retrieveAssetsParams, retrieveAnAssetParams);
+          return data;
+        } else {
+          data = await common.custom.checkOwnershipInfura(wrap, apiConfig, customConfig, address, retrieveAssetsParams, retrieveAnAssetParams);
+          return data;
+        }
       } catch (err) {
         throw err;
       }
