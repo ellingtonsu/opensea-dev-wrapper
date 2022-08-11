@@ -129,11 +129,11 @@ To use the wrapped APIs, developers MUST define a wrap config as
 
 ```js
 const wrapConfig = {
-  'collection': 'dtg-wounderland',
-  'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
-  'schema': 'ERC1155',
-  'api_key': '',
-  'infura_endpoint': '',
+  collection: 'dtg-wounderland',
+  contract_address: '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  schema: 'ERC1155',
+  api_key: '',
+  infura_endpoint: '',
 };
 ```
 
@@ -161,11 +161,11 @@ test();
 const {openseaWrap} = require('opensea-dev-wrapper');
 
 const wrapConfig = {
-  'collection': 'dtg-wounderland',
-  'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
-  'schema': 'ERC1155',
-  'api_key': '',
-  'infura_endpoint': '',
+  collection: 'dtg-wounderland',
+  contract_address: '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  schema: 'ERC1155',
+  api_key: '',
+  infura_endpoint: '',
 };
 
 const queryParams = {
@@ -203,11 +203,11 @@ To use the custom APIs, developers MUST define a custom config as
 
 ```js
 const customConfig = {
-  'collection': 'dtg-wounderland',
-  'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
-  'schema': 'ERC1155',
-  'api_key': '',
-  'infura_endpoint': '',
+  collection: 'dtg-wounderland',
+  contract_address: '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  schema: 'ERC1155',
+  api_key: '',
+  infura_endpoint: '',
 };
 ```
 
@@ -228,11 +228,11 @@ test();
 const {openseaWrap} = require('opensea-dev-wrapper');
 
 const customConfig = {
-  'collection': 'dtg-wounderland',
-  'contract_address': '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
-  'schema': 'ERC1155',
-  'api_key': '',
-  'infura_endpoint': '',
+  collection: 'dtg-wounderland',
+  contract_address: '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+  schema: 'ERC1155',
+  api_key: '',
+  infura_endpoint: '',
 };
 
 const address = '0xCB2DeeF8Bff8f948bA8bA655cc6C81D199Ee3D32';
