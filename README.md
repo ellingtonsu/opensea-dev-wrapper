@@ -15,7 +15,7 @@ A JavaScript software development kit (SDK) for easily interacting with native O
   - [A Complete Example of Custom APIs](#a-complete-example-of-custom-apis)
   - [Bulit-in Custom APIs](#bulit-in-custom-apis)
 - [Release Notes](#release-notes)
-  - [v1.1.1](#v111)
+  - [v1.2.1](#v121)
   - [v1.2.0](#v120)
   - [v1.1.0](#v110)
   - [v1.0.1](#v101)
@@ -254,7 +254,7 @@ test();
 - checkOwnership (<span style="color:red">**CAUTION**</span>: it takes time if there are too many tokens in target collection.)
 
 ## Release Notes
-### v1.1.1
+### v1.2.1
 August 11, 2022
 
 ***What's New***
