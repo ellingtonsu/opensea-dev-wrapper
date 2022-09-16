@@ -1,6 +1,6 @@
 {
   "name": "opensea-dev-wrapper",
-  "version": "1.2.2",
+  "version": "1.2.1",
   "description": "A custom software development kit (SDK) for interacting with original OpenSea SDK, API, or contracts",
   "main": "index.js",
   "scripts": {
