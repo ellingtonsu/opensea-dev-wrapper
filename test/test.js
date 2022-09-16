@@ -19,8 +19,8 @@ const infuraMainnetEndpoint = '';
 
 const config = {
   'testnet': {
-    collection: 'dtg-wounderland',
-    contract_address: '0x88b48f654c30e99bc2e4a1559b4dcf1ad93fa656',
+    collection: 'boomsky-planet-zone1',
+    contract_address: '0xf4910c763ed4e47a585e2d34baa9a4b611ae448c',
     schema: 'ERC1155',
     api_key: '',
     infura_endpoint: infuraTestnetEndpoint,
